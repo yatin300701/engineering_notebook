@@ -1,0 +1,25 @@
+@layer base {
+  html {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  img,
+  picture,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    @apply text-indigo-600 hover:text-indigo-700 transition;
+  }
+
+  ::selection {
+    @apply bg-indigo-200;
+  }
+}

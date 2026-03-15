@@ -1,0 +1,127 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const tags = [
+  "All",
+  "React",
+  "Angular",
+  "Node",
+  "Javascript",
+  "Postgress",
+  "DynamoDB",
+  "System Design"
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+</head>
+
+<body class="bg-neutral-950 text-neutral-200">
+
+<Header />
+
+<main class="max-w-6xl mx-auto px-6 py-16">
+  <header class="mb-10">
+    <h1 class="text-4xl font-bold">Blog</h1>
+  </header>
+
+  <div class="flex flex-wrap gap-3 mb-12" id="filters">
+
+    {tags.map(tag => (
+      <button
+        data-tag={tag}
+        class="filter-btn px-4 py-2 rounded-full text-sm border border-neutral-700 hover:border-neutral-500 transition"
+      >
+        {tag}
+      </button>
+    ))}
+
+  </div>
+  <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="posts">
+    {posts.map(post => (
+      <article
+        class="post group"
+        data-tags={post.data.tags.join(",")}
+      >
+
+        <a href={`/blog/${post.id}/`} class="block">
+
+          {post.data.heroImage && (
+            <Image
+              src={post.data.heroImage}
+              width={720}
+              height={360}
+              alt={post.data.title}
+              class="rounded-xl mb-4 border border-neutral-800 group-hover:border-neutral-700 transition"
+            />
+          )}
+
+          <h2 class="text-lg font-semibold mb-2">
+            {post.data.title}
+          </h2>
+
+          <p class="text-sm text-neutral-400">
+            <FormattedDate date={post.data.pubDate} />
+          </p>
+
+        </a>
+
+      </article>
+    ))}
+
+  </section>
+
+</main>
+
+<Footer />
+
+<script>
+const buttons = document.querySelectorAll(".filter-btn") as unknown as  HTMLElement[];
+const posts = document.querySelectorAll(".post") 
+
+buttons.forEach(button => {
+
+  button.addEventListener("click", () => {
+	
+    const tag = button.dataset.tag;
+	buttons.forEach(b => {
+      b.classList.remove("bg-blue-500", "text-white", "border-blue-500");
+    });
+
+    button.classList.add("bg-blue-500", "text-white", "border-blue-500");
+
+    
+    posts.forEach(post => {
+		 const article = post as HTMLElement;
+      const postTags = article.dataset.tags?.split(",") ?? [];
+
+      if (tag?.toLowerCase() === "all" || postTags.map(t => t.toLowerCase()).includes(tag?.toLowerCase() ?? "")) {
+        article.style.display = "block";
+      } else {
+        article.style.display = "none";
+      }
+
+    });
+
+  });
+
+});
+</script>
+
+</body>
+</html>

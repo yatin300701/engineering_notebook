@@ -1,0 +1,9 @@
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .content-auto {
+    content-visibility: auto;
+  }
+}

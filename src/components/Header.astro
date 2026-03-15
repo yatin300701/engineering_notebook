@@ -1,0 +1,49 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { githubProjectsUrl } from "../consts";
+---
+
+<header class="sticky top-0 z-50 border-b border-neutral-800 bg-neutral-950/80 backdrop-blur">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+    <a href="/" class="text-lg font-semibold tracking-tight text-white">
+      Yatraj<span class="text-blue-400">.dev</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8 text-sm">
+		<HeaderLink href="/" class="text-neutral-400 hover:text-white transition">
+        Home
+      </HeaderLink>
+      <HeaderLink href="/blog" class="text-neutral-400 hover:text-white transition">
+        Blog
+      </HeaderLink>
+
+      <!-- <HeaderLink href="/notes" class="text-neutral-400 hover:text-white transition">
+        Notes
+      </HeaderLink>
+
+      <HeaderLink href="/projects" class="text-neutral-400 hover:text-white transition">
+        Projects
+      </HeaderLink> -->
+
+      <HeaderLink href="/about" class="text-neutral-400 hover:text-white transition">
+        About
+      </HeaderLink>
+
+    </div>
+
+    <div class="flex items-center gap-4">
+
+      <a
+        href={githubProjectsUrl}
+        target="_blank"
+        class="text-neutral-400 hover:text-white transition"
+        aria-label="GitHub"
+      >
+        GitHub
+      </a>
+
+    </div>
+
+  </nav>
+</header>

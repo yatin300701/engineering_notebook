@@ -1,0 +1,63 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+</head>
+
+<body class="bg-neutral-950 text-neutral-200">
+
+<Header />
+
+<main>
+
+  <section class="relative">
+    <div class="mt-16 md:mt-20 lg:mt-24 px-4 sm:px-8 mx-auto max-w-3xl flex flex-col items-center text-center gap-6">
+
+      <a href="/blog" class="px-4 py-2 rounded-full border border-neutral-700 text-sm text-neutral-300 hover:border-neutral-500">
+        Engineering Blog
+      </a>
+
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+        Yatraj<span class="text-blue-400">.dev</span>
+      </h1>
+
+      <p class="text-neutral-400 text-lg max-w-2xl">
+        A developer journal where I document everything I learn about
+        JavaScript, React architecture, backend systems, and system design.
+      </p>
+      <div class="flex gap-4 mt-4">
+        <a
+          href="/blog"
+          class="px-6 py-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition"
+        >
+          Read Articles
+        </a>
+
+        <a
+          href="/about"
+          class="px-6 py-3 rounded-full border border-neutral-700 hover:border-neutral-500 transition"
+        >
+          About
+        </a>
+      </div>
+
+      <div class="mt-6 px-4 py-3 bg-neutral-900 rounded-lg border border-neutral-800 font-mono text-sm text-neutral-300">
+        <code>git clone knowledge && build.system()</code>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<Footer />
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BaseHead from '../components/BaseHead.astro';
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import {  SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <BaseHead title="About — Yatraj.dev" description={SITE_DESCRIPTION} />
+</head>
+
+<body class="bg-neutral-950 text-neutral-200">
+
+<Header />
+
+<main class="max-w-4xl mx-auto px-6 py-20">
+
+  <section class="flex flex-col md:flex-row items-center gap-10 mb-16">
+
+    <img
+      src={AboutHeroImage.src}
+      alt="Yatin Choudhary"
+      class="w-32 h-32 rounded-full object-cover border border-neutral-800"
+    />
+
+    <div>
+
+      <h1 class="text-4xl font-bold mb-3">
+        Yatin Choudhary
+      </h1>
+
+      <p class="text-neutral-400 text-lg">
+        Software Developer • React • TypeScript • System Design
+      </p>
+
+      <div class="flex gap-6 mt-4 text-sm">
+
+        <a
+          href="https://github.com/yatin300701"
+          target="_blank"
+          class="text-neutral-400 hover:text-white transition"
+        >
+          GitHub
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/yatin-choudhary/"
+          target="_blank"
+          class="text-neutral-400 hover:text-white transition"
+        >
+          LinkedIn
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="space-y-6 text-neutral-300 leading-relaxed">
+
+    <p>
+      Hi, I'm <strong>Yatin</strong>, a software developer focused on building
+      modern web applications and exploring scalable system architecture.
+    </p>
+
+    <p>
+      I primarily work with the JavaScript ecosystem, especially
+      <strong>React, TypeScript, and Node.js</strong>. Over time my interest
+      has expanded beyond frontend development into backend systems,
+      performance optimization, and system design.
+    </p>
+
+    <p>
+      <strong>Yatraj.dev</strong> is my personal engineering notebook.
+      I use this space to document things I learn while building software —
+      from JavaScript internals and React architecture to backend systems
+      and distributed system concepts.
+    </p>
+
+    <p>
+      Writing helps me clarify my understanding and share practical insights
+      with other developers who enjoy digging deeper into how things work.
+    </p>
+
+  </section>
+
+  <section class="mt-16">
+
+    <h2 class="text-2xl font-semibold mb-6">
+      What I Write About
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-6 text-neutral-300">
+
+      <div class="p-5 border border-neutral-800 rounded-lg">
+        <h3 class="font-semibold mb-2">JavaScript & TypeScript</h3>
+        <p class="text-sm text-neutral-400">
+          Language internals, async patterns, and advanced concepts.
+        </p>
+      </div>
+
+      <div class="p-5 border border-neutral-800 rounded-lg">
+        <h3 class="font-semibold mb-2">React Architecture</h3>
+        <p class="text-sm text-neutral-400">
+          Component design, rendering behavior, and performance patterns.
+        </p>
+      </div>
+
+      <div class="p-5 border border-neutral-800 rounded-lg">
+        <h3 class="font-semibold mb-2">Backend Systems</h3>
+        <p class="text-sm text-neutral-400">
+          Node.js APIs, database design, and scalable backend patterns.
+        </p>
+      </div>
+
+      <div class="p-5 border border-neutral-800 rounded-lg">
+        <h3 class="font-semibold mb-2">System Design</h3>
+        <p class="text-sm text-neutral-400">
+          Architecture decisions behind real-world systems.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<Footer />
+
+</body>
+</html>
