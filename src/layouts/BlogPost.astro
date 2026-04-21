@@ -6,104 +6,116 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 
-type Props = CollectionEntry<"blog">["data"];
+import readingTime from "reading-time";
 
-const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
+type Props = CollectionEntry<"blog">["data"] & {
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+};
+
+const { title, description, pubDate, updatedDate, heroImage, tags, headings } =
+  Astro.props as Props;
+
+const content = await Astro.slots.render("default");
+
+const stats = readingTime(content);
 ---
 
 <html lang="en">
-<head>
-  <BaseHead title={title} description={description} />
-</head>
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
 
-<body class="bg-neutral-950 text-neutral-200 antialiased">
+  <body class="bg-neutral-950 text-neutral-200 antialiased">
+    <Header />
 
-<Header />
+    <main class="px-6 mt-20 md:mt-24">
+      <div
+        class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-12"
+      >
+        <article class="max-w-3xl">
+          {
+            heroImage && (
+              <div class="mb-10">
+                <Image
+                  src={heroImage}
+                  alt={title}
+                  width={1200}
+                  height={630}
+                  class="rounded-xl border border-neutral-800"
+                />
+              </div>
+            )
+          }
 
-<main class="px-6 mt-20 md:mt-24">
+          <header class="mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+              {title}
+            </h1>
 
-  <article class="mx-auto max-w-3xl">
+            <div
+              class="flex flex-wrap items-center gap-4 mt-4 text-sm text-neutral-400"
+            >
+              <time>
+                <FormattedDate date={pubDate} />
+              </time>
 
-    <!-- HERO IMAGE -->
-    {heroImage && (
-      <div class="mb-10">
-        <Image
-          src={heroImage}
-          alt={title}
-          width={1200}
-          height={630}
-          class="rounded-xl border border-neutral-800"
-        />
+              {
+                updatedDate && (
+                  <span class="italic">
+                    Updated <FormattedDate date={updatedDate} />
+                  </span>
+                )
+              }
+
+              {
+                tags && (
+                  <div class="flex gap-2">
+                    {tags.map((tag) => (
+                      <span class="px-2 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded-md">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )
+              }
+
+              <span>{stats.text}</span>
+            </div>
+          </header>
+
+          <div
+            class="prose
+        prose-invert
+        max-w-none
+        prose-headings:text-neutral-100
+        prose-p:text-neutral-300
+        prose-a:text-blue-400
+        prose-a:no-underline
+        prose-a:hover:underline
+        prose-code:text-blue-300
+        prose-code:bg-neutral-900
+        prose-code:px-1
+        prose-code:py-0.5
+        prose-code:rounded
+        prose-pre:bg-neutral-900
+        prose-pre:border
+        prose-pre:border-neutral-800"
+            set:html={content}
+          />
+        </article>
+
+        <aside class="hidden lg:block">
+          <TableOfContents headings={headings} />
+        </aside>
       </div>
-    )}
+    </main>
 
-    <!-- TITLE -->
-    <header class="mb-10">
-
-      <h1 class="text-4xl md:text-5xl font-bold leading-tight">
-        {title}
-      </h1>
-
-      <!-- META -->
-      <div class="flex flex-wrap items-center gap-4 mt-4 text-sm text-neutral-400">
-
-        <time>
-          <FormattedDate date={pubDate} />
-        </time>
-
-        {updatedDate && (
-          <span class="italic">
-            Updated <FormattedDate date={updatedDate} />
-          </span>
-        )}
-
-        {tags && (
-          <div class="flex gap-2">
-            {tags.map((tag) => (
-              <span class="px-2 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded-md">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-      </div>
-
-    </header>
-
-    <!-- ARTICLE CONTENT -->
-    <div
-      class="
-      prose
-      prose-invert
-      max-w-none
-
-      prose-headings:text-neutral-100
-      prose-p:text-neutral-300
-      prose-a:text-blue-400
-      prose-a:no-underline
-      prose-a:hover:underline
-
-      prose-code:text-blue-300
-      prose-code:bg-neutral-900
-      prose-code:px-1
-      prose-code:py-0.5
-      prose-code:rounded
-
-      prose-pre:bg-neutral-900
-      prose-pre:border
-      prose-pre:border-neutral-800
-      "
-    >
-      <slot />
-    </div>
-
-  </article>
-
-</main>
-
-<Footer />
-
-</body>
+    <Footer />
+  </body>
 </html>

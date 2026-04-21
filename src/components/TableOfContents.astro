@@ -1,0 +1,17 @@
+---
+const { headings } = Astro.props;
+---
+
+<nav class="text-sm">
+  <ul class="space-y-2">
+    {
+      headings?.map((h) => (
+        <li class={`ml-${(h.depth - 1) * 4}`}>
+          <a href={`#${h.slug}`} class="text-neutral-400 hover:text-white">
+            {h.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
