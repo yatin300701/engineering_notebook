@@ -2,7 +2,7 @@
 title: JS  Variables
 description: Everything about JS variables. From scope, shadowing or important interview questions
 tags: ["JavaScript"]
-pubDate: 2026-04-11
+pubDate: 2026-04-22
 heroImage: ../../assets/blogs/js-variables.png
 ---
 
