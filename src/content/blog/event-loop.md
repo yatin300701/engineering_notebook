@@ -3,7 +3,7 @@ title: Everything about Event Loop in JS
 description: All important cases, and interview preparations for js event loop
 tags: ["JavaScript"]
 pubDate: 2026-05-10
-heroImage: ../../assets/blogs/js-variables.png
+heroImage: ../../assets/blogs/event-loop.png
 ---
 
 # Event Loop

@@ -3,7 +3,7 @@ title: Everything about 'this'
 description: All important cases, and interview preparations for js 'this' keyword
 tags: ["JavaScript"]
 pubDate: 2026-05-9
-heroImage: ../../assets/blogs/js-variables.png
+heroImage: ../../assets/blogs/this.png
 ---
 
 # Everything about 'this' keyword
