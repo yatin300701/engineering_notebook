@@ -229,3 +229,16 @@ nextTick
 Promise
 setTimeout
 setImmediate
+
+### Pratice Questions
+
+```
+setTimeout(()=>{
+    console.log("A")
+    Promise.resolve().then(()=>console.log("B"))
+},0)
+
+setTimeout(()=>console.log("C"),0)
+```
+
+A -> B -> C ( micro after each macro)
