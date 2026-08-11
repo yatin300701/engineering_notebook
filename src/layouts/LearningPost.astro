@@ -1,0 +1,307 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+
+import readingTime from "reading-time";
+
+type Props = CollectionEntry<"learning">["data"] & {
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+};
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  kind,
+  tags,
+  tldr,
+  decisionRule,
+  prerequisites,
+  scope,
+  sources,
+  mastery,
+  headings,
+} = Astro.props as Props;
+
+const content = await Astro.slots.render("default");
+const stats = readingTime(content);
+
+const kindLabel = {
+  paper: "Research paper",
+  component: "System design component",
+  pattern: "Pattern",
+}[kind];
+
+const totalTopics = mastery.reduce((sum, s) => sum + s.topics.length, 0);
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+
+  <body class="bg-neutral-950 text-neutral-200 antialiased">
+    <Header />
+
+    <main class="px-6 mt-20 md:mt-24">
+      <div
+        class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-12"
+      >
+        <article class="max-w-3xl">
+          <header class="mb-10">
+            <div
+              class="flex flex-wrap items-center gap-3 text-xs uppercase tracking-widest text-blue-400 mb-4"
+            >
+              <span>Learning of the Day</span>
+              <span class="text-neutral-700">/</span>
+              <span class="text-neutral-500">{kindLabel}</span>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+              {title}
+            </h1>
+
+            <div
+              class="flex flex-wrap items-center gap-4 mt-4 text-sm text-neutral-400"
+            >
+              <time><FormattedDate date={pubDate} /></time>
+
+              {
+                updatedDate && (
+                  <span class="italic">
+                    Updated <FormattedDate date={updatedDate} />
+                  </span>
+                )
+              }
+
+              <span>{stats.text}</span>
+
+              <div class="flex gap-2">
+                {
+                  tags.map((tag) => (
+                    <span class="px-2 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded-md">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+          </header>
+
+          <!-- The two things worth memorising -->
+          <section class="grid sm:grid-cols-2 gap-4 mb-12">
+            <div
+              class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5"
+            >
+              <h2
+                class="text-xs uppercase tracking-widest text-neutral-500 mb-2"
+              >
+                In one line
+              </h2>
+              <p class="text-neutral-200 leading-relaxed">{tldr}</p>
+            </div>
+
+            <div
+              class="rounded-xl border border-blue-900/60 bg-blue-950/20 p-5"
+            >
+              <h2 class="text-xs uppercase tracking-widest text-blue-400 mb-2">
+                How to choose
+              </h2>
+              <p class="text-neutral-200 leading-relaxed">{decisionRule}</p>
+            </div>
+          </section>
+
+          <!-- What you need before this makes sense -->
+          <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-1">Before you start</h2>
+            <p class="text-sm text-neutral-500 mb-5">
+              If you can't answer a check question, learn that first — the rest
+              won't stick.
+            </p>
+
+            <ul class="space-y-3">
+              {
+                prerequisites.map((p) => (
+                  <li class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+                    <h3 class="font-semibold text-neutral-100">{p.topic}</h3>
+                    <p class="mt-1 text-sm text-neutral-400">{p.why}</p>
+                    <p class="mt-3 text-sm text-neutral-300">
+                      <span class="text-neutral-500">Check —</span> {p.check}
+                    </p>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+
+          <div
+            class="prose
+        prose-invert
+        max-w-none
+        prose-headings:text-neutral-100
+        prose-p:text-neutral-300
+        prose-a:text-blue-400
+        prose-a:no-underline
+        prose-a:hover:underline
+        prose-code:text-blue-300
+        prose-code:bg-neutral-900
+        prose-code:px-1
+        prose-code:py-0.5
+        prose-code:rounded
+        prose-pre:bg-neutral-900
+        prose-pre:border
+        prose-pre:border-neutral-800
+        prose-th:text-neutral-200
+        prose-td:text-neutral-300"
+            set:html={content}
+          />
+
+          <!-- The honesty contract: what this entry does and does not contain -->
+          <section class="mt-16 pt-10 border-t border-neutral-800">
+            <h2 class="text-2xl font-bold mb-1">What this covers — and what it doesn't</h2>
+            <p class="text-sm text-neutral-500 mb-6">
+              So a gap is something you can see, not something you have to
+              guess at.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div
+                class="rounded-xl border border-neutral-800 bg-neutral-900/40 p-5"
+              >
+                <h3
+                  class="text-xs uppercase tracking-widest text-neutral-500 mb-3"
+                >
+                  In scope
+                </h3>
+                <ul class="space-y-2">
+                  {
+                    scope.covered.map((item) => (
+                      <li class="flex gap-2 text-sm text-neutral-300">
+                        <span class="text-blue-400 shrink-0">✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+
+              <div
+                class="rounded-xl border border-amber-900/50 bg-amber-950/10 p-5"
+              >
+                <h3
+                  class="text-xs uppercase tracking-widest text-amber-500/80 mb-3"
+                >
+                  Deliberately left out
+                </h3>
+                <ul class="space-y-4">
+                  {
+                    scope.notCovered.map((item) => (
+                      <li>
+                        <p class="text-sm font-medium text-neutral-200">
+                          {item.topic}
+                        </p>
+                        <p class="mt-1 text-sm text-neutral-400">{item.why}</p>
+                        <p class="mt-1 text-xs text-neutral-500">
+                          Lives in: {item.where}
+                        </p>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Where to read it properly -->
+          <section class="mt-16 pt-10 border-t border-neutral-800">
+            <h2 class="text-2xl font-bold mb-1">Read the sources</h2>
+            <p class="text-sm text-neutral-500 mb-6">
+              This page is the map, not the territory. These are the territory.
+            </p>
+
+            <ul class="space-y-3">
+              {
+                sources.map((source) => (
+                  <li>
+                    <a
+                      href={source.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group flex items-start gap-3 rounded-lg border border-neutral-800 bg-neutral-900/40 p-4 hover:border-neutral-600 transition"
+                    >
+                      <span class="mt-0.5 shrink-0 px-2 py-0.5 text-[10px] uppercase tracking-wider rounded bg-neutral-800 text-neutral-400 border border-neutral-700">
+                        {source.type}
+                      </span>
+                      <span class="text-neutral-300 group-hover:text-white transition">
+                        {source.title}
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+
+          <!-- Everything you'd need to actually master it -->
+          <section class="mt-16 pt-10 border-t border-neutral-800">
+            <h2 class="text-2xl font-bold mb-1">Path to mastery</h2>
+            <p class="text-sm text-neutral-500 mb-6">
+              {totalTopics} topics, in the order they make sense.
+            </p>
+
+            <ol class="space-y-8">
+              {
+                mastery.map((stage, i) => (
+                  <li class="relative pl-10">
+                    <span class="absolute left-0 top-0 flex h-7 w-7 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900 text-xs text-neutral-400">
+                      {i + 1}
+                    </span>
+
+                    <h3 class="text-lg font-semibold text-neutral-100 mb-3">
+                      {stage.stage}
+                    </h3>
+
+                    <ul class="flex flex-wrap gap-2">
+                      {stage.topics.map((topic) => (
+                        <li class="px-3 py-1.5 text-sm rounded-lg border border-neutral-800 bg-neutral-900/60 text-neutral-300">
+                          {topic}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))
+              }
+            </ol>
+          </section>
+
+          <div class="mt-16">
+            <a
+              href="/learning"
+              class="text-sm text-neutral-400 hover:text-white transition"
+            >
+              ← All daily learnings
+            </a>
+          </div>
+        </article>
+
+        <aside class="hidden lg:block">
+          <div class="sticky top-24">
+            <TableOfContents headings={headings} />
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
