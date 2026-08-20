@@ -132,7 +132,35 @@ ALB - load balancing between  servers/ services within a location
 Use dns as it can influence which IP the client resolves and get user location by  approx of user location from DNS query ( But it can come from ISP DNS, Google Public DNS therefore it uses EDNS client subnet - a dns extention - ECS)
 - geneally slow to change as clients cache the ans, so ttl is used
 
-eg 
+eg Route 53 Latency Based Routing ( it chooses the AWS region that has least latency for user - how does it know - AWS maintains latency measurements between user networks and AWS regions ),
+Route 53 Geolocation Routing ( you tell it, users from this geography should go to this endpoint, how does it know user position ??), cloudflare (it considers , endpoint health, pool health, geography, latency, proximity etc), Cloudflare also have geo steering ( clouldflare has explicit geo steering ),
+Akamai GTM (it makes decision based on data center health and global internet conditions)
 
+4. Client-side / sidecar
+  No middlebox. Caller have list of backends it can pick from or it calls local sidecar proxy to pick it.
+
+  Yes it does make another hop for it, but its local not network call to get healthy servers, so is quite fast.
+
+  eg gRPC built-in LB, (gRPC has built in load balancing ie can choose BE using round_robin or pick_first) Envoy + xDS, Linkerd (lighweight fast service mesh for Kubernetes that automatically detects and load balances gRPC/HTTP2 across pods) , Consul (mesh platform that tracks healthy service instances and  can integrate with Envoy)
+
+  ### Algoes
+
+  Round Robin - Backend are identical and requests cost same ( cons: falls apart when request cost is skewed - one slow backend becomes latency sink )
+  Weighted round robin - ( its good initially but weights are static so does not represent real time utility of server, ie if after some time server 1 which have weight of 2 , has 95% cpu usage, and server 2 which have weight of 1 with 10% of cpu usage , it will still send more requests to server 1 )
+  Random -
+  Least Connection - which has fewest open connections ( cons: backend that is failing fast has few open connections, so it look idle and attracts more traffic)
+  Least Response Time - Fewest connections, weighted by observed latency
+  Power of two choices - Lighter of two randomly sampled backend ( winner of slace in which we choose any two server and send request to less loaded one)
+  IP hash - backend chosen by hashing the client IP ( workaround or cheap way of storing users session, it failes when many people are behind shared NATs)
+  Consistant hashing - backend choosen by hashing a key , stable under membership change ( used for scalability , use it when backend holds state for a key , a cache, session etc and you want to keep adding or remoing one node to remap 1/N of keys then all)
+
+
+  (IP hash pins a client, consistent hashing pins a key and servives the fleet chaning size)
+
+
+  ### The failures that actully page you
+
+  > Idle timeout mismatch
+  
 
 
