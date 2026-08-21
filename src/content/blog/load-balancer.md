@@ -159,8 +159,88 @@ Akamai GTM (it makes decision based on data center health and global internet co
 
 
   ### The failures that actully page you
+  
+  Architecture
+
+                      Client
+                       |
+                       | HTTP
+                       v
+                +--------------+
+                | Load Balancer|
+                +--------------+
+                  /     |     \
+                 /      |      \
+                v       v       v
+             Server A Server B Server C
+                |       |       |
+                +-------+-------+
+                        |
+                     Database
+
+
 
   > Idle timeout mismatch
+  Occurs in load balancer to server, connection, when load balancer has idle timeout 60 sec, means it will close connections if idel for 60s else reuse the connection. Server has origin keep-alive for connections which is seperate pool which tells server to keep connection open till 60s.
+  If Origin keep-alive is 60 and load balancer idle timeout is 60, mismatch can happen such that ,server thinks it should kill connection , but load balancer thinks connection is alive, making next call via unconnected server giving 502, without server log.
+
+  - Keep keep-alive bigger then idle timeout
   
+  Client
+  |
+  | request
+  v
+ LB
+  |
+  X  connection failure
+  |
+  v
+Backend
+
+Backend logs:
+"Nothing happened."
+
+When:
+ALB 502 rate: 2%
+Application 5xx: 0%
+
+Check:
+LB
+ ├── backend connection resets
+ ├── target connection errors
+ ├── idle timeout
+ ├── keep-alive
+ └── connection reuse
+
+ > Health Check too shallow
+
+ Should /health only check server working or db have open connections also ?
+ Depends on system , genrally
+ /liveness - process if alive
+ /rediness -> checks critical db connectivity etc services
+
+ But does not mean it sould check all sevices used, ie if redis is down for 3 sec, it should not  remove this server from live servers , as its not that critical and can work without it too.
+
+ > Retry storms
+
+ If layer is doing retry it can cause too many retry calls, making db connections full /overload it, just for it.
+ Instead one should have retry only on some cases not all eg /pay - no till idempotency 
+ Else there should be cap on  how much traffic can go from retry , rest should just fail.
+
+ > Sticky sessions plus scaling
+
+ Sticky session ie user to server 1:1 is not good for scaling, as it does not reduce hot instances and is worse for scale in
+ So externalize session state, and not store it in server
+ But there are cases in which its needed, websocket, specialized connection affinity etc.
+
+ > Cross-AZ cost and latency
+
+ ....
+
+
+ 
+
+
+
 
 
