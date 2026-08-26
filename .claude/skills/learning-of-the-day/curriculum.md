@@ -12,11 +12,11 @@ is doesn't make anyone senior. The bar is:
 Every entry must carry the reader to **level 3** on its topic. An entry that
 stops at level 1 is a Wikipedia summary and has failed.
 
-| Level | Can do | Where it lives in the entry |
-| --- | --- | --- |
-| 1 — Explain | "What is a load balancer?" | `## The one idea`, `## The N kinds` |
-| 2 — Choose | Given 10M users, read-heavy: pick the components and say why each exists | `decisionRule`, `## Picking one` |
-| 3 — Defend | Answer "why not X?" and "when would this be the wrong call?" | `## Defend your choice` |
+| Level       | Can do                                                                   | Where it lives in the entry         |
+| ----------- | ------------------------------------------------------------------------ | ----------------------------------- |
+| 1 — Explain | "What is a load balancer?"                                               | `## The one idea`, `## The N kinds` |
+| 2 — Choose  | Given 10M users, read-heavy: pick the components and say why each exists | `decisionRule`, `## Picking one`    |
+| 3 — Defend  | Answer "why not X?" and "when would this be the wrong call?"             | `## Defend your choice`             |
 
 ## Picking the next entry
 
@@ -145,11 +145,31 @@ when the topic genuinely needs it, and say so in `prerequisites`.
 - [ ] The browser rendering pipeline — DOM, CSSOM, layout, paint, composite
 - [ ] Reflow vs repaint and layout thrashing
 - [ ] Core Web Vitals — LCP, INP, CLS, and diagnosing each
+- [ ] JavaScript execution and blocking — event loop, long tasks, blocking vs non-blocking schedulers
+- [ ] RequestAnimationFrame vs setTimeout vs requestIdleCallback — the scheduling hierarchy
 - [ ] CSR vs SSR vs SSG vs ISR — the Next.js rendering decision
 - [ ] Hydration — why it costs so much and how to avoid it
-- [ ] Bundle size — code splitting, tree shaking, lazy loading, prefetch
+- [ ] Bundle size — code splitting, tree shaking, lazy loading, prefetch, dynamic imports
+- [ ] Resource prioritization and the critical path — preload, prefetch, preconnect, priority hints
+- [ ] JavaScript bundling and shipping — chunk strategy, polyfill costs, vendor isolation
+- [ ] React performance patterns — reconciliation, memo/useMemo correctness, batching, Suspense
+- [ ] Web Performance APIs — PerformanceObserver, Navigation/Resource Timing, RUM vs Lighthouse
+- [ ] CSS and the critical rendering path — CSSOM blocking, inline vs external, media queries, when to use calc()
+- [ ] Font loading and CLS — @font-face, font-display values (block/swap/fallback/optional), subsetting, system vs web fonts
+- [ ] Layout, paint, and composite — which CSS properties trigger what, will-change tradeoffs, CSS containment
+- [ ] LCP optimization — why images are the bottleneck, image sizing, preload vs eager, async decoding
 - [ ] Browser storage — cookies, localStorage, IndexedDB, service workers
 - [ ] Server state vs client state — the real state-management question
+- [ ] Image and media optimization — responsive images, modern formats (WebP/AVIF), lazy loading
+- [ ] CSS-in-JS performance — critical path impact, hydration costs, runtime overhead vs build-time
+- [ ] JavaScript shipping and hydration — progressive hydration, selective hydration, hydration mismatch cost
+- [ ] Lazy loading strategy — route vs component vs intersection, when it helps vs when it creates waterfalls
+- [ ] Animation performance and jank — RAF budget, CSS vs JS animations, measuring frame drops with PerformanceObserver
+- [ ] INP deep dive — why it's hard to optimize, GC pauses, event listener overhead, React reconciliation in interactions
+- [ ] TTFB and server response optimization — streaming HTML, fetch-on-render vs fetch-while-rendering, critical data in first response
+- [ ] JavaScript as a render-blocking resource — parser blocking, main thread starvation, third-party script competition
+- [ ] Metrics that actually diagnose problems — RUM degradation patterns, why Lighthouse and real users disagree, the CLS sources
+- [ ] Framework architecture patterns — SSR vs Hydration vs Islands vs Resumability; when each model wins
 - [ ] Offline-first and sync conflict resolution
 - [ ] Frontend auth — sessions vs JWT, refresh rotation, cookie flags
 
@@ -188,7 +208,7 @@ Reuse these across entries where they genuinely apply — don't cite them by
 reflex.
 
 - System Design Primer — <https://github.com/donnemartin/system-design-primer>
-- *Designing Data-Intensive Applications*, Martin Kleppmann
+- _Designing Data-Intensive Applications_, Martin Kleppmann
 - AWS Well-Architected Framework — <https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html>
 - Google SRE Book — <https://sre.google/sre-book/table-of-contents/>
 - Engineering blogs: Netflix, Cloudflare, Uber, Stripe, Discord, Slack, LinkedIn
