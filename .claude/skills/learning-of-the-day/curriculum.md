@@ -48,7 +48,7 @@ when the topic genuinely needs it, and say so in `prerequisites`.
 - [ ] DNS — the resolution path, TTL, and DNS-based failover
 - [ ] CDNs — push vs pull, invalidation, and what must never be cached
 - [ ] Reverse proxy vs load balancer vs API gateway — overlapping roles
-- [ ] TLS and mTLS — handshake, termination, cert chains
+- [ ] TLS and mTLS — handshake, termination, cert chains, cipher suites
 - [ ] CORS and preflight — the model, not the copy-pasted header
 - [ ] WebSockets vs SSE vs long polling
 - [ ] Caching strategies — aside, through, behind, refresh-ahead
@@ -56,6 +56,7 @@ when the topic genuinely needs it, and say so in `prerequisites`.
 - [ ] Redis as a primitive — data types, TTL, atomicity, when it is not a database
 - [ ] Rate limiting — fixed window, sliding window, token bucket, leaky bucket
 - [ ] Distributed rate limiting — where to enforce it and why
+- [ ] Queueing theory — Little's Law, M/M/1 queues, and why p99 latency explodes before capacity runs out
 - [ ] The JS event loop — macrotasks, microtasks, starvation, worker threads
 - [ ] Concurrency in Node — race conditions, locks, worker pools
 - [ ] Linux for engineers — file descriptors, signals, and "too many open files"
