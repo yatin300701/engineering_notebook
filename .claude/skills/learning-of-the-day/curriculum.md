@@ -41,7 +41,7 @@ when the topic genuinely needs it, and say so in `prerequisites`.
 ## Phase 1 — Foundations
 
 - [x] Load balancers — L4/L7/DNS/client-side (`2026-08-11-load-balancers`)
-- [ ] TCP vs UDP, and what a connection actually costs
+- [x] TCP vs UDP, and what a connection actually costs (`2026-08-26-tcp-vs-udp`)
 - [ ] The TCP handshake, retransmission, and why packet loss spikes latency
 - [ ] HTTP/1.1 vs HTTP/2 vs HTTP/3 — head-of-line blocking at each layer
 - [ ] HTTP caching — Cache-Control, ETag, revalidation, and who caches what
